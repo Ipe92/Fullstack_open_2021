@@ -1,2 +1,2 @@
-# Fullstack_open_2020
-Full stack open 2020 kurssin suorittelua
+# Fullstack_open_2021
+Full stack open 2021 kurssin suorittelua
