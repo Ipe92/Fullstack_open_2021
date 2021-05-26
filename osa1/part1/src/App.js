@@ -1,17 +1,23 @@
-import React from 'react';
-import Hello from './Hello'
+import React, { useState } from "react";
+
+import Display from "./Display";
+import Button from "./Button";
 
 const App = () => {
-  const nimi = 'Pekka';
-  const ika = 10;
+    const [counter, setCounter] = useState(0);
 
-  return (
-    <>
-      <h1>Greetings</h1>
-      <Hello name="Maya" age={26 + 10} />
-      <Hello name={nimi} age={ika} />
-    </>
-  )
+    const increaseByOne = () => setCounter(counter + 1);
+    const decreaseByOne = () => setCounter(counter - 1);
+    const setToZero = () => setCounter(0);
+
+    return (
+        <div>
+            <Display counter={counter} />
+            <Button handleClick={increaseByOne} text="plus" />
+            <Button handleClick={setToZero} text="zero" />
+            <Button handleClick={decreaseByOne} text="minus" />
+        </div>
+    );
 };
 
 export default App;
