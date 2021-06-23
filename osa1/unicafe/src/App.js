@@ -19,6 +19,8 @@ const App = () => {
         setBad(bad + 1);
     };
 
+    const Statistics = (props) => {};
+
     return (
         <div>
             <div>
