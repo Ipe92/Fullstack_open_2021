@@ -9,6 +9,7 @@ const History = (props) => {
 };
 
 const Button = ({ handleClick, text }) => <button onClick={handleClick}> {text} </button>;
+
 const App = () => {
     const [left, setLeft] = useState(0);
     const [right, setRight] = useState(0);
