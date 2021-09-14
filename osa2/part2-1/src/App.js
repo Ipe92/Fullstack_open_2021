@@ -1,7 +1,9 @@
 import React from "react";
 import Note from "./components/Note";
 
-const App = ({ notes }) => {
+const App = (props) => {
+    console.log(props);
+    const { notes } = props;
     return (
         <div>
             <h1>Notes</h1>
