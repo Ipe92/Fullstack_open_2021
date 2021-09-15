@@ -52,6 +52,7 @@ const App = () => {
 			</div>
 			<form onSubmit={addPerson}>
 				<div>
+					<h2>add a new</h2>
 					name: <input value={newName} onChange={handleNameChange} />
 				</div>
 				<div>
