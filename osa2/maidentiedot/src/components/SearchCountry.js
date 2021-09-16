@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Input, List } from "semantic-ui-react";
+import { Button, Input, List } from "semantic-ui-react";
 import DetailsCountry from "./DetailsCountry";
 
 const SearchCountry = () => {
@@ -31,7 +31,7 @@ const SearchCountry = () => {
 			setShowDetails(false);
 			setFilteredCountries(filt);
 		} else {
-			console.log("ei montaa");
+			console.log("10< tulosta");
 			setTooMany(false);
 			setShowDetails(false);
 			setFilteredCountries(filt);
@@ -48,6 +48,17 @@ const SearchCountry = () => {
 
 	console.log(searchFilter);
 	console.log("toomany", tooMany);
+
+	const showCountry = (event) => {
+		const filt = countries.filter((c) => {
+			return c.name
+				.toLowerCase()
+				.includes(event.target.value.toLowerCase());
+		});
+		setTooMany(false);
+		setShowDetails(true);
+		setFilteredCountries(filt);
+	};
 
 	return (
 		<div>
@@ -67,6 +78,13 @@ const SearchCountry = () => {
 						return (
 							<List.Item as="li" key={i}>
 								{c.name}
+								<Button
+									className={c.name}
+									value={c.name}
+									onClick={showCountry}
+								>
+									show
+								</Button>
 							</List.Item>
 						);
 					})}
