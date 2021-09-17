@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Filter from "./components/Filter";
 import AddPerson from "./components/AddPerson";
 import Persons from "./components/Persons";
@@ -40,6 +39,20 @@ const App = () => {
 		}
 	};
 
+	const deletePerson = (event, id, name) => {
+		event.preventDefault();
+		console.log("ID joka poistetaan: ", id);
+
+		if (window.confirm(`Delete ${name}?`)) {
+			console.log("Delete");
+			personService
+				.deletePerson(id)
+				.then(setPersons(persons.filter((person) => person.id !== id)));
+		} else {
+			console.log("Do nothing");
+		}
+	};
+
 	const handleNameChange = (newName) => {
 		setNewName(newName);
 	};
@@ -63,7 +76,11 @@ const App = () => {
 				addPerson={addPerson}
 			/>
 			<h2>numbers</h2>
-			<Persons persons={persons} filter={filter} />
+			<Persons
+				persons={persons}
+				filter={filter}
+				deletePerson={deletePerson}
+			/>
 		</div>
 	);
 };
