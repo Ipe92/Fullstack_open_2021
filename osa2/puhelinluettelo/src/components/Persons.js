@@ -11,7 +11,7 @@ const Persons = (props) => {
 				)
 				.map((person) => {
 					return (
-						<div key={person.id}>
+						<div key={person.name}>
 							{person.name} {person.number}
 							<button
 								name={person.name}

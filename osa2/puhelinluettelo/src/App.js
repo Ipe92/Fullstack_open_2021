@@ -21,15 +21,29 @@ const App = () => {
 
 	const addPerson = (event) => {
 		event.preventDefault();
+		const korvattava = persons.find((nimi) => nimi.name === newName);
 
 		const personObject = {
 			name: newName,
-			id: persons.length + 1,
 			number: newNumber,
 		};
 
 		if (persons.some((nimi) => nimi.name === newName)) {
-			window.alert(`${newName} is already added to phonebook`);
+			window.confirm(
+				`${newName} is already added to phonebook, replace the old number with a new one?`,
+			);
+			personService.update(korvattava.id, personObject).then(() => {
+				const updateObject = {
+					name: newName,
+					number: newNumber,
+					id: korvattava.id,
+				};
+				let temp = [...persons];
+				temp[korvattava.id - 1] = updateObject;
+				setPersons(temp);
+				setNewName("");
+				setNewNumber("");
+			});
 		} else {
 			personService.create(personObject).then((returnedPerson) => {
 				setPersons(persons.concat(returnedPerson));
@@ -53,16 +67,15 @@ const App = () => {
 		}
 	};
 
+	const handleFilter = (newFilter) => {
+		setFilter(newFilter);
+	};
+
 	const handleNameChange = (newName) => {
 		setNewName(newName);
 	};
-
 	const handleNumberChange = (newNumber) => {
 		setNewNumber(newNumber);
-	};
-
-	const handleFilter = (newFilter) => {
-		setFilter(newFilter);
 	};
 
 	return (
@@ -74,6 +87,8 @@ const App = () => {
 				handleNameChange={handleNameChange}
 				handleNumberChange={handleNumberChange}
 				addPerson={addPerson}
+				newName={newName}
+				newNumber={newNumber}
 			/>
 			<h2>numbers</h2>
 			<Persons

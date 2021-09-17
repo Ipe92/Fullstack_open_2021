@@ -8,7 +8,7 @@ const AddPerson = (props) => {
 				<input
 					type="text"
 					name="name"
-					//value={props.newName}
+					value={props.newName}
 					onChange={(e) => props.handleNameChange(e.target.value)}
 				/>
 			</div>
@@ -17,7 +17,7 @@ const AddPerson = (props) => {
 				<input
 					type="text"
 					name="number"
-					//value={props.newNumber}
+					value={props.newNumber}
 					onChange={(e) => props.handleNumberChange(e.target.value)}
 				/>
 			</div>
