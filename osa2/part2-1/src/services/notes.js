@@ -1,8 +1,5 @@
 import axios from "axios";
 
-// wanha
-// const baseUrl = "http://localhost:3001/api/notes";
-// const baseUrl = "https://immense-stream-60921.herokuapp.com/api/notes";
 const baseUrl = "/api/notes";
 
 const getAll2 = () => {
