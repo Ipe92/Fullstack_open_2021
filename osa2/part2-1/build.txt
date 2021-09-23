@@ -1,0 +1,1 @@
+cp -r build ../../osa3/notebackend
