@@ -1,2 +1,9 @@
 build
 mongo.js
+models
+node_modules
+requests
+.env
+.eslintrc.js
+index.js
+package.json
