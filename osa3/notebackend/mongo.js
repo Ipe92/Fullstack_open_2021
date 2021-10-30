@@ -6,7 +6,9 @@ if (process.argv.length < 3) {
 }
 
 const password = process.argv[2];
-const url = `mongodb+srv://fullstack:${password}@cluster0.co2lh.mongodb.net/test?retryWrites=true&w=majority`;
+
+const url = `mongodb+srv://fullstack:${password}@cluster0-ostce.mongodb.net/note-app?retryWrites=true`;
+
 mongoose.connect(url);
 
 const noteSchema = new mongoose.Schema({
@@ -23,7 +25,14 @@ const note = new Note({
 	important: true,
 });
 
-note.save().then((response) => {
-	console.log("note saved!");
+Note.find({}).then((result) => {
+	result.forEach((note) => {
+		console.log(note);
+	});
 	mongoose.connection.close();
 });
+
+// note.save().then((response) => {
+// 	console.log("note saved!");
+// 	mongoose.connection.close();
+// });
