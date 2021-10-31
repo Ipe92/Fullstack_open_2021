@@ -1,8 +1,13 @@
-const express = require("express");
-const app = express();
-const cors = require("cors");
-require("dotenv").config();
-const Note = require("./models/note");
+const app = require("./app"); // Express
+const http = require("http");
+const config = require("./utils/config");
+const logger = require("./utils/logger");
+
+const server = http.createServer(app);
+
+server.listen(config.Port, () => {
+	logger.info(`Server running on port ${config.PORT}`);
+});
 
 const requestLogger = (request, response, next) => {
 	console.log("Method:", request.method);
@@ -99,8 +104,3 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint);
 app.use(errorHandler);
-
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-	console.log(`Server running on port ${PORT}`);
-});
