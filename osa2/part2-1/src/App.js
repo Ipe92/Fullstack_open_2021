@@ -37,14 +37,10 @@ const App = () => {
 		noteService
 			.update(id, changedNote)
 			.then((returnedNote) => {
-				setNotes(
-					notes.map((note) => (note.id !== id ? note : returnedNote)),
-				);
+				setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
 			})
 			.catch((error) => {
-				setErrorMessage(
-					`Note "${note.content}" was already removed from server`,
-				);
+				setErrorMessage(`Note "${note.content}" was already removed from server`);
 				setTimeout(() => {
 					setErrorMessage(null);
 				}, 5000);
@@ -56,26 +52,18 @@ const App = () => {
 		setNewNote(event.target.value);
 	};
 
-	const notesToShow = showAll
-		? notes
-		: notes.filter((note) => note.important);
+	const notesToShow = showAll ? notes : notes.filter((note) => note.important);
 
 	return (
 		<div>
 			<h1>Notes</h1>
 			<Notification message={errorMessage} />
 			<div>
-				<button onClick={() => setshowAll(!showAll)}>
-					show {showAll ? "important" : "all"}
-				</button>
+				<button onClick={() => setshowAll(!showAll)}>show {showAll ? "important" : "all"}</button>
 			</div>
 			<ul>
 				{notesToShow.map((note) => (
-					<Note
-						key={note.id}
-						note={note}
-						toggleImportance={() => toggleImportanceOf(note.id)}
-					/>
+					<Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)} />
 				))}
 			</ul>
 			<form onSubmit={addNote}>
