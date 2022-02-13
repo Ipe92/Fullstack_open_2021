@@ -1,10 +1,7 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
 
-const password = process.argv[2];
-
-const url = `mongodb+srv://fullstack:${password}@cluster0.co2lh.mongodb.net/puhelinluettelo?retryWrites=true&w=majority`;
-
-mongoose.connect(url, { useNewUrlParser: true });
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 const personSchema = new mongoose.Schema({
 	name: String,
@@ -13,10 +10,10 @@ const personSchema = new mongoose.Schema({
 
 const Person = mongoose.model("Person", personSchema);
 
-if (process.argv[3] && process.argv[4]) {
+if (process.argv[2] && process.argv[3]) {
 	const person = new Person({
-		name: process.argv[3],
-		number: process.argv[4],
+		name: process.argv[2],
+		number: process.argv[3],
 	});
 
 	console.log(`lisätään henkilö ${person.name} numero ${person.number} luetteloon`);
