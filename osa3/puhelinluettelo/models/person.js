@@ -5,7 +5,10 @@ const mongoDB = process.env.MONGODB_URI;
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
 const personSchema = new mongoose.Schema({
-	name: String,
+	name: {
+		type: String,
+		minlength: 3,
+	},
 	number: String,
 });
 
