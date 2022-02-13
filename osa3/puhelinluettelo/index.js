@@ -10,7 +10,7 @@ morgan.token("body", (req, res) => {
 const app = express();
 
 app.use(express.json());
-app.use(morgan(":method :url :body :status :res[content-length] - :res-time ms"));
+app.use(morgan(":method :url :body :status :res[content-length]"));
 app.use(express.static("build"));
 
 let persons = [
@@ -50,22 +50,25 @@ app.get("/api/persons", (req, res) => {
 		});
 });
 
-app.get("/api/persons/:id", (req, res) => {
-	const id = Number(req.params.id);
-	const person = persons.find((person) => person.id === id);
-
-	if (person) {
-		res.json(person);
-	} else {
-		res.status(404).end();
-	}
+app.get("/api/persons/:id", (req, res, next) => {
+	Person.findById(req.params.id)
+		.then((person) => {
+			res.json(Person.format(person));
+		})
+		.catch((error) => {
+			next(error);
+		});
 });
 
-app.get("/info", (req, res) => {
-	const body = `<p>Puhelinluettelossa on ${
-		persons.length
-	} henkilön tiedot</p><br/><p>${new Date()}</p>`;
-	res.send(body);
+app.get("/info", (req, res, next) => {
+	Person.countDocuments()
+		.then((count) => {
+			const body = `
+		<p>Puhelinluettelossa on ${count} henkilön tiedot</p>
+		<p>${new Date()}</p>`;
+			res.send(body);
+		})
+		.catch((error) => next(error));
 });
 
 app.post("/api/persons", (req, res) => {
@@ -120,7 +123,9 @@ app.put("/api/persons/:id", (req, res, next) => {
 		.then((updatedPerson) => {
 			res.json(Person.format(updatedPerson));
 		})
-		.catch((error) => next(error));
+		.catch((error) => {
+			next(error);
+		});
 });
 
 const unknownEndpoint = (req, res) => {

@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+const mongoDB = process.env.MONGODB_URI;
+mongoose.connect(mongoDB, { useNewUrlParser: true });
 
 const personSchema = new mongoose.Schema({
 	name: String,
