@@ -3,14 +3,14 @@ const express = require("express");
 const morgan = require("morgan");
 const Person = require("./models/person");
 
-morgan.token("body", (request, response) => {
-	return JSON.stringify(request.body);
+morgan.token("body", (req, res) => {
+	return JSON.stringify(req.body);
 });
 
 const app = express();
 
 app.use(express.json());
-app.use(morgan(":method :url :body :status :res[content-length] - :response-time ms"));
+app.use(morgan(":method :url :body :status :res[content-length] - :res-time ms"));
 app.use(express.static("build"));
 
 let persons = [
@@ -41,9 +41,13 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/persons", (req, res) => {
-	Person.find({}).then((persons) => {
-		res.json(persons.map(Person.format));
-	});
+	Person.find({})
+		.then((persons) => {
+			res.json(persons.map(Person.format));
+		})
+		.catch((error) => {
+			console.log(error);
+		});
 });
 
 app.get("/api/persons/:id", (req, res) => {
@@ -64,10 +68,6 @@ app.get("/info", (req, res) => {
 	res.send(body);
 });
 
-const generateId = () => {
-	return Math.floor(Math.random() * 10000);
-};
-
 app.post("/api/persons", (req, res) => {
 	const body = req.body;
 
@@ -83,14 +83,19 @@ app.post("/api/persons", (req, res) => {
 		});
 	}
 
-	const person = {
+	const person = new Person({
 		name: body.name,
 		number: body.number,
-		id: generateId(),
-	};
+	});
 
-	persons = persons.concat(person);
-	res.json(person);
+	person
+		.save()
+		.then((savedPerson) => {
+			res.json(Person.format(savedPerson));
+		})
+		.catch((error) => {
+			console.log(error);
+		});
 });
 
 app.delete("/api/persons/:id", (req, res) => {
@@ -103,6 +108,18 @@ const unknownEndpoint = (req, res) => {
 	res.status(404).send({ error: "unknown endpoint" });
 };
 app.use(unknownEndpoint);
+
+const errorHandler = (error, req, res, next) => {
+	console.error(error.message);
+
+	if (error.name === "CastError") {
+		return res.status(400).send({ error: "malformatted id" });
+	}
+
+	next(error);
+};
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
