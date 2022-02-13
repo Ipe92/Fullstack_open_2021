@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
+const Person = require("./modules/person");
 
 morgan.token("body", (request, response) => {
 	return JSON.stringify(request.body);
@@ -39,8 +40,22 @@ app.get("/", (req, res) => {
 	res.send("<h1>Terve Puhelinluettelo!</h1>");
 });
 
+const formatPerson = (person) => {
+	return {
+		name: person.name,
+		number: person.number,
+		id: person._id,
+	};
+};
+
 app.get("/api/persons", (req, res) => {
-	res.json(persons);
+	Person.find({}).then((persons) => {
+		res.json(
+			persons.map((person) => {
+				return { name: person.name, number: person.number, id: person._id };
+			}),
+		);
+	});
 });
 
 app.get("/api/persons/:id", (req, res) => {
