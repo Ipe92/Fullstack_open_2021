@@ -8,8 +8,8 @@ morgan.token("body", (request, response) => {
 const app = express();
 
 app.use(express.json());
-
 app.use(morgan(":method :url :body :status :res[content-length] - :response-time ms"));
+app.use(express.static("build"));
 
 let persons = [
 	{
